@@ -4,20 +4,20 @@ function finalizeFrontEndLogin(response) {
     // TODO: 處理登入成功後的流程
     // 取得idToken
     // https://firebase.google.com/docs/reference/js/firebase.User#getidtoken
-    firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(function (idToken) {
-        axios.post('/api/login', {})
-            .then(res => {
-                console.log("ok");
-                window.location = '/'
-
-            })
-            .catch(err => {
-                console.log("ERROR");
-            });
-    }).catch(function (error) {
-        // Handle error
-    });
-
+    response.user.getIdToken()
+        .then((idToken) => {
+            // const idToken = idToken;
+            axios.post('/api/login', idToken)
+                .then(res => {
+                    console.log(res.data);
+                })
+                .catch(err => {
+                    console.log("ERROR");
+                })
+        })
+        .catch(err => {
+            console.log("ERROR");
+        })
 }
 
 // 登入表單送出時
